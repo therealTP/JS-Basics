@@ -179,7 +179,7 @@ var counter = function() {
   
   for (var i = 1; i <= 5; i++) {
     (function(){
-      var j=i;
+      var j=i; //this is the important part: without reassigning i, referencing scope of for loop, 
       setTimeout(function timer(){
         console.log(j);
       }, j*1000);
@@ -203,17 +203,30 @@ counter();
   funcArray[4]() //4
   funcArray[5]() //5
 
+  var funcArray = [function zero() {return 0}, function one() {return 1}, function two() {return 2}, 
+  function three() {return 3}, function four() {return 4}, function five() {return 5}];
+
   *Hint: Don't let this fool you. Break down what's really happening here.
+*/
+
+/*
+var funcArray = [function() {return 0}, function() {return 1}, function() {return 2}, 
+function() {return 3}, function() {return 4}, function() {return 5}];
 */
 
 var runArray = function() {
   var arr = [];
-  return function() {
-    var index = arr.length;
-    arr.push(function() {return 1});
-    return arr;
+  // var index = 0;
+  for (var i = 0; i <=5; i++) {
+    (function() {
+      var j = i; // important part. need to reassign to snapshot value of i at each iteration of for loop & add to array functions
+      arr.push(function() {return j});
+    })();
   };
+  return arr;
 }
 
 var funcArray = runArray();
+
+
 
